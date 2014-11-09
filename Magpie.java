@@ -1,3 +1,5 @@
+// Brent Tokumi
+
 /**
  * A program to carry on conversations with a human user.
  * This is the initial version that:  
@@ -21,7 +23,7 @@ public class Magpie
     return "Hello, let's talk.";
   }
   private int findKeyword(String statement, String goal,
-                          int startPos)
+                          int startPos)    
   {
     String phrase = statement.trim();
     // The only change to incorporate the startPos is in
@@ -70,26 +72,40 @@ public class Magpie
     return -1;
   }
   
- /**
-  * Search for one word in phrase. The search is not case
-  * sensitive. This method will check that the given goal
-  * is not a substring of a longer string (so, for
-  * example, "I know" does not contain "no"). The search
-  * begins at the beginning of the string.
-  * 
-  * @param statement
-  *            the string to search
-  * @param goal
-  *            the string to search for
-  * @return the index of the first occurrence of goal in
-  *         statement or -1 if it's not found
-  */
- private int findKeyword(String statement, String goal)
- {
-  return findKeyword(statement, goal, 0);
- }
-
+  private String transformIWantStatement(String statement)
+  {
+    //  Remove the final period, if there is one
+    statement = statement.trim();
+    String lastChar = statement.substring(statement
+                                            .length() - 1);
+    if (lastChar.equals("."))
+    {
+      statement = statement.substring(0, statement
+                                        .length() - 1);
+    }
+    int psn = findKeyword (statement, "I want", 0);
+    String restOfStatement = statement.substring(psn + 6).trim();
+    return "Why would you be happy if you had " + restOfStatement + "?";
+  }
   
+  /**
+   * Search for one word in phrase. The search is not case
+   * sensitive. This method will check that the given goal
+   * is not a substring of a longer string (so, for
+   * example, "I know" does not contain "no"). The search
+   * begins at the beginning of the string.
+   * 
+   * @param statement
+   *            the string to search
+   * @param goal
+   *            the string to search for
+   * @return the index of the first occurrence of goal in
+   *         statement or -1 if it's not found
+   */
+  private int findKeyword(String statement, String goal)
+  {
+    return findKeyword(statement, goal, 0);
+  }  
   /**
    * Gives a response to a user statement
    * 
@@ -131,8 +147,7 @@ public class Magpie
       response = getRandomResponse();
     }
     return response;
-  }
-  
+  }  
   /**
    * Pick a default response to use if nothing else fits.
    * @return a non-committal string
@@ -162,4 +177,5 @@ public class Magpie
     }
     return response;
   }
+  
 }
